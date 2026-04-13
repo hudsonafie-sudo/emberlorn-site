@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emberlorn — Dark Fantasy Action Roguelike</title>
+<meta name="description" content="Emberlorn is a dark fantasy action roguelike with wave-based combat. Choose your hero, face increasingly dangerous hordes, gear up between waves, and fight your way to survival.">
+<meta property="og:title" content="Emberlorn — Dark Fantasy Action Roguelike">
+<meta property="og:description" content="Survive the waves. Adapt your build. Become legendary. A dark fantasy action roguelike with wave-based combat.">
+<meta property="og:image" content="assets/capsule.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a14;
+    --bg-card: #12121f;
+    --bg-card-hover: #1a1a2e;
+    --gold: #f1c40f;
+    --gold-dim: #b8940a;
+    --ember: #ff6633;
+    --ember-glow: #ff4411;
+    --text: #e0e0e0;
+    --text-dim: #888;
+    --border: #2a2a3e;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ===== PARTICLES BACKGROUND ===== */
+  .particles {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: var(--ember);
+    border-radius: 50%;
+    opacity: 0;
+    animation: float-up linear infinite;
+  }
+  @keyframes float-up {
+    0% { opacity: 0; transform: translateY(0) scale(1); }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.3; }
+    100% { opacity: 0; transform: translateY(-100vh) scale(0.3); }
+  }
+
+  /* ===== HERO SECTION ===== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    z-index: 1;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at center top, rgba(255,102,51,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at center bottom, rgba(241,196,15,0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-logo {
+    width: min(500px, 85vw);
+    margin-bottom: 8px;
+    filter: drop-shadow(0 0 30px rgba(241,196,15,0.3));
+    animation: logo-glow 4s ease-in-out infinite alternate;
+  }
+  @keyframes logo-glow {
+    from { filter: drop-shadow(0 0 20px rgba(241,196,15,0.2)); }
+    to { filter: drop-shadow(0 0 40px rgba(241,196,15,0.4)); }
+  }
+  .hero-tagline {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(16px, 3vw, 22px);
+    color: var(--text-dim);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+  }
+  .hero-keyart {
+    width: min(700px, 90vw);
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(255,102,51,0.1);
+    margin-bottom: 40px;
+  }
+  .hero-desc {
+    max-width: 650px;
+    font-size: 17px;
+    color: #bbb;
+    margin-bottom: 36px;
+    line-height: 1.8;
+  }
+  .cta-row {
+    display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-family: 'Cinzel', serif;
+    font-size: 15px; font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+  }
+  .btn-steam {
+    background: linear-gradient(135deg, #1b2838, #2a475e);
+    color: #66c0f4;
+    border-color: #2a475e;
+  }
+  .btn-steam:hover {
+    background: linear-gradient(135deg, #2a475e, #3d6a8e);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102,192,244,0.2);
+  }
+  .btn-demo {
+    background: linear-gradient(135deg, var(--ember), #cc4400);
+    color: #fff;
+    border-color: var(--ember);
+  }
+  .btn-demo:hover {
+    background: linear-gradient(135deg, #ff7744, var(--ember));
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255,102,51,0.3);
+  }
+  .btn svg { width: 20px; height: 20px; fill: currentColor; }
+
+  /* ===== SECTION BASE ===== */
+  section {
+    position: relative; z-index: 1;
+    padding: 80px 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(24px, 4vw, 36px);
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+  }
+  .section-subtitle {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 15px;
+    margin-bottom: 50px;
+  }
+  .divider {
+    width: 60px; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--ember), transparent);
+    margin: 0 auto 50px;
+    border-radius: 2px;
+  }
+
+  /* ===== FEATURES ===== */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+  .feature-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    transition: all 0.3s ease;
+  }
+  .feature-card:hover {
+    border-color: var(--ember);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(255,102,51,0.1);
+  }
+  .feature-icon {
+    font-size: 28px;
+    margin-bottom: 14px;
+    display: block;
+  }
+  .feature-card h3 {
+    font-family: 'Cinzel', serif;
+    color: var(--gold);
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  .feature-card p {
+    color: #aaa;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  /* ===== CHARACTERS ===== */
+  .char-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 16px;
+    justify-items: center;
+  }
+  .char-card {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 12px;
+    width: 100%;
+    max-width: 160px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+  .char-card:hover {
+    border-color: var(--ember);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(255,102,51,0.15);
+    background: var(--bg-card-hover);
+  }
+  .char-card img {
+    width: 80px; height: 80px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+    transition: transform 0.3s ease;
+  }
+  .char-card:hover img { transform: scale(1.15); }
+  .char-card .char-name {
+    font-family: 'Cinzel', serif;
+    color: var(--ember);
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .char-card .char-role {
+    color: var(--text-dim);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .char-placeholder {
+    width: 80px; height: 80px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+    margin: 0 auto 10px;
+    background: #1a1a2e;
+    border-radius: 8px;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+  }
+
+  /* ===== STEAM WIDGET ===== */
+  .steam-section {
+    text-align: center;
+    padding: 60px 20px 80px;
+  }
+  .steam-widget {
+    max-width: 650px;
+    margin: 0 auto;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  }
+  .steam-widget iframe {
+    width: 100%;
+    height: 190px;
+    border: none;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 40px 20px;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+  footer .studio {
+    font-family: 'Cinzel', serif;
+    color: var(--gold-dim);
+    font-size: 15px;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+  footer a {
+    color: var(--ember);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  footer a:hover { color: var(--gold); }
+  .footer-links {
+    display: flex; gap: 20px; justify-content: center;
+    margin-top: 12px; flex-wrap: wrap;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 600px) {
+    .features-grid { grid-template-columns: 1fr; }
+    .char-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .char-card { padding: 12px 8px; }
+    .char-card img { width: 60px; height: 60px; }
+    .hero-desc { font-size: 15px; }
+    section { padding: 50px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating particles -->
+<div class="particles" id="particles"></div>
+
+<!-- HERO -->
+<section class="hero">
+  <img src="assets/logo.png" alt="Emberlorn" class="hero-logo">
+  <p class="hero-tagline">Dark Fantasy Action Roguelike</p>
+  <img src="assets/keyart.webp" alt="Emberlorn Key Art" class="hero-keyart">
+  <p class="hero-desc">
+    Survive the waves. Adapt your build. Become legendary.<br>
+    A dark fantasy action roguelike with wave-based combat and a 3/4 top-down perspective.
+    Each run is a new attempt to survive hordes of dark creatures — and every defeat makes you stronger.
+  </p>
+  <div class="cta-row">
+    <a href="https://store.steampowered.com/app/4585550/Emberlorn/" class="btn btn-steam" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3l-.5 3H13v6.95c5.05-.5 9-4.76 9-9.95 0-5.52-4.48-10-10-10z"/></svg>
+      Wishlist on Steam
+    </a>
+    <a href="https://hudafy.itch.io/ashborn" class="btn btn-demo" target="_blank">
+      Play Free Demo
+    </a>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section>
+  <h2 class="section-title">Features</h2>
+  <div class="divider"></div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">&#9876;</span>
+      <h3>Intense Combat</h3>
+      <p>Face increasingly dangerous waves of enemies, culminating in brutal bosses. Combine automatic and active skills to create devastating combos — melee, ranged, area or single-target.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">&#9881;</span>
+      <h3>Build Your Way</h3>
+      <p>32 skills split between physical and magical. Equipment with damage bonuses and trophies with unique effects. The Blacksmith transmutes your gear to adapt to any strategy.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">&#127970;</span>
+      <h3>Preparation Room</h3>
+      <p>Between each wave, visit the Merchant to buy equipment and trophies, or the Blacksmith to transmute your items. Gear up before facing the next challenge.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">&#11014;</span>
+      <h3>Permanent Progression</h3>
+      <p>Ashes collected during runs unlock upgrades at the Altar that persist between matches. The more you play, the stronger your next hero starts.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">&#128081;</span>
+      <h3>12 Unique Heroes</h3>
+      <p>Each hero has a unique starting skill, passive and stats — from brutal berserkers to arcane sorceresses. Find the one that fits your style.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">&#127922;</span>
+      <h3>Free Demo</h3>
+      <p>Try a selection of heroes and challenges for free. The full game brings even more content, characters and difficulties.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CHARACTERS -->
+<section>
+  <h2 class="section-title">Choose Your Hero</h2>
+  <p class="section-subtitle">12 heroes, each with unique skills, passives, and playstyles</p>
+  <div class="divider"></div>
+  <div class="char-grid">
+    <div class="char-card">
+      <img src="assets/chars/kael.webp" alt="Kael">
+      <div class="char-name">Kael</div>
+      <div class="char-role">Young Fighter</div>
+    </div>
+    <div class="char-card">
+      <img src="assets/chars/veynar.webp" alt="Veynar">
+      <div class="char-name">Veynar</div>
+      <div class="char-role">Shadow Warrior</div>
+    </div>
+    <div class="char-card">
+      <img src="assets/chars/draven.webp" alt="Draven">
+      <div class="char-name">Draven</div>
+      <div class="char-role">Cursed Berserker</div>
+    </div>
+    <div class="char-card">
+      <img src="assets/chars/lyra.webp" alt="Lyra">
+      <div class="char-name">Lyra</div>
+      <div class="char-role">Precision Archer</div>
+    </div>
+    <div class="char-card">
+      <img src="assets/chars/zephyr.webp" alt="Zephyr">
+      <div class="char-name">Zephyr</div>
+      <div class="char-role">Ghost Speedster</div>
+    </div>
+    <div class="char-card">
+      <img src="assets/chars/gorath.webp" alt="Gorath">
+      <div class="char-name">Gorath</div>
+      <div class="char-role">Iron Colossus</div>
+    </div>
+    <div class="char-card">
+      <img src="assets/chars/shade.webp" alt="Shade">
+      <div class="char-name">Shade</div>
+      <div class="char-role">Shadow Assassin</div>
+    </div>
+    <div class="char-card">
+      <img src="assets/chars/nyx.webp" alt="Nyx">
+      <div class="char-name">Nyx</div>
+      <div class="char-role">Arcane Sorceress</div>
+    </div>
+    <div class="char-card">
+      <img src="assets/chars/riven.webp" alt="Riven">
+      <div class="char-name">Riven</div>
+      <div class="char-role">Fortune Hunter</div>
+    </div>
+    <div class="char-card">
+      <img src="assets/chars/malachar.webp" alt="Malachar">
+      <div class="char-name">Malachar</div>
+      <div class="char-role">Immortal Vampire</div>
+    </div>
+    <div class="char-card">
+      <img src="assets/chars/dante.webp" alt="Dante">
+      <div class="char-name">Dante</div>
+      <div class="char-role">Destiny Gambler</div>
+    </div>
+    <div class="char-card">
+      <img src="assets/chars/ceberu.webp" alt="Ceberu">
+      <div class="char-name">Ceberu</div>
+      <div class="char-role">Stone Sentinel</div>
+    </div>
+  </div>
+</section>
+
+<!-- STEAM WIDGET -->
+<div class="steam-section">
+  <div class="steam-widget">
+    <iframe src="https://store.steampowered.com/widget/4585550/" frameborder="0"></iframe>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="studio">Ufy Studios</div>
+  <p>A dark fantasy action roguelike — coming soon</p>
+  <div class="footer-links">
+    <a href="https://store.steampowered.com/app/4585550/Emberlorn/" target="_blank">Steam</a>
+    <a href="https://hudafy.itch.io/ashborn" target="_blank">itch.io</a>
+  </div>
+</footer>
+
+<script>
+// Generate floating ember particles
+(function() {
+  const container = document.getElementById('particles');
+  const count = 30;
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.bottom = '-10px';
+    p.style.width = (1 + Math.random() * 3) + 'px';
+    p.style.height = p.style.width;
+    p.style.animationDuration = (8 + Math.random() * 12) + 's';
+    p.style.animationDelay = (Math.random() * 15) + 's';
+    p.style.background = Math.random() > 0.5 ? '#ff6633' : '#f1c40f';
+    container.appendChild(p);
+  }
+})();
+</script>
+
+</body>
+</html>
