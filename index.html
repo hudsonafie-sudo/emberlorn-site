@@ -6,7 +6,7 @@
 <title>Emberlorn — Dark Fantasy Action Roguelike</title>
 <meta name="description" content="Emberlorn is a dark fantasy action roguelike with wave-based combat. Choose your hero, face increasingly dangerous hordes, gear up between waves, and fight your way to survival.">
 <meta property="og:title" content="Emberlorn — Dark Fantasy Action Roguelike">
-<meta property="og:description" content="Survive the waves. Adapt your build. Become legendary. A dark fantasy action roguelike with wave-based combat.">
+<meta property="og:description" content="Survive the waves. Adapt your build. Become legendary.">
 <meta property="og:image" content="assets/capsule.png">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
@@ -39,17 +39,37 @@
     overflow-x: hidden;
   }
 
-  /* ===== PARTICLES BACKGROUND ===== */
+  /* ===== LANGUAGE BAR ===== */
+  .lang-bar {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(10,10,20,0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: center; align-items: center;
+    gap: 6px; padding: 8px 16px;
+    flex-wrap: wrap;
+  }
+  .lang-btn {
+    background: none; border: 2px solid transparent;
+    border-radius: 6px; padding: 4px 8px;
+    cursor: pointer; display: flex; align-items: center; gap: 6px;
+    transition: all 0.2s; opacity: 0.6;
+  }
+  .lang-btn:hover { opacity: 1; border-color: var(--border); }
+  .lang-btn.active { opacity: 1; border-color: var(--gold); background: rgba(241,196,15,0.08); }
+  .lang-btn img { width: 24px; height: 16px; border-radius: 2px; object-fit: cover; }
+  .lang-btn span { color: var(--text-dim); font-size: 11px; font-weight: 500; letter-spacing: 0.5px; }
+  .lang-btn.active span { color: var(--gold); }
+
+  /* ===== PARTICLES ===== */
   .particles {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     pointer-events: none; z-index: 0; overflow: hidden;
   }
   .particle {
-    position: absolute;
-    width: 2px; height: 2px;
-    background: var(--ember);
-    border-radius: 50%;
-    opacity: 0;
+    position: absolute; width: 2px; height: 2px;
+    background: var(--ember); border-radius: 50%; opacity: 0;
     animation: float-up linear infinite;
   }
   @keyframes float-up {
@@ -59,26 +79,21 @@
     100% { opacity: 0; transform: translateY(-100vh) scale(0.3); }
   }
 
-  /* ===== HERO SECTION ===== */
+  /* ===== HERO ===== */
   .hero {
-    position: relative;
-    min-height: 100vh;
+    position: relative; min-height: 100vh;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    text-align: center;
-    padding: 40px 20px;
-    z-index: 1;
+    text-align: center; padding: 80px 20px 40px; z-index: 1;
   }
   .hero::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
     background: radial-gradient(ellipse at center top, rgba(255,102,51,0.08) 0%, transparent 60%),
                 radial-gradient(ellipse at center bottom, rgba(241,196,15,0.05) 0%, transparent 50%);
     pointer-events: none;
   }
   .hero-logo {
-    width: min(500px, 85vw);
-    margin-bottom: 8px;
+    width: min(500px, 85vw); margin-bottom: 8px;
     filter: drop-shadow(0 0 30px rgba(241,196,15,0.3));
     animation: logo-glow 4s ease-in-out infinite alternate;
   }
@@ -89,43 +104,30 @@
   .hero-tagline {
     font-family: 'Cinzel', serif;
     font-size: clamp(16px, 3vw, 22px);
-    color: var(--text-dim);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 30px;
+    color: var(--text-dim); letter-spacing: 3px;
+    text-transform: uppercase; margin-bottom: 30px;
   }
   .hero-keyart {
-    width: min(700px, 90vw);
-    border-radius: 12px;
+    width: min(700px, 90vw); border-radius: 12px;
     border: 2px solid var(--border);
     box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(255,102,51,0.1);
     margin-bottom: 40px;
   }
   .hero-desc {
-    max-width: 650px;
-    font-size: 17px;
-    color: #bbb;
-    margin-bottom: 36px;
-    line-height: 1.8;
+    max-width: 650px; font-size: 17px; color: #bbb;
+    margin-bottom: 36px; line-height: 1.8;
   }
-  .cta-row {
-    display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
-  }
+  .cta-row { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
   .btn {
     display: inline-flex; align-items: center; gap: 10px;
-    padding: 14px 32px;
-    border-radius: 8px;
-    font-family: 'Cinzel', serif;
-    font-size: 15px; font-weight: 700;
-    text-decoration: none;
-    letter-spacing: 1px;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
+    padding: 14px 32px; border-radius: 8px;
+    font-family: 'Cinzel', serif; font-size: 15px; font-weight: 700;
+    text-decoration: none; letter-spacing: 1px;
+    transition: all 0.3s ease; border: 2px solid transparent;
   }
   .btn-steam {
     background: linear-gradient(135deg, #1b2838, #2a475e);
-    color: #66c0f4;
-    border-color: #2a475e;
+    color: #66c0f4; border-color: #2a475e;
   }
   .btn-steam:hover {
     background: linear-gradient(135deg, #2a475e, #3d6a8e);
@@ -134,42 +136,33 @@
   }
   .btn-demo {
     background: linear-gradient(135deg, var(--ember), #cc4400);
-    color: #fff;
-    border-color: var(--ember);
+    color: #fff; border-color: var(--ember);
   }
   .btn-demo:hover {
     background: linear-gradient(135deg, #ff7744, var(--ember));
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(255,102,51,0.3);
   }
-  .btn svg { width: 20px; height: 20px; fill: currentColor; }
 
-  /* ===== SECTION BASE ===== */
+  /* ===== SECTIONS ===== */
   section {
     position: relative; z-index: 1;
-    padding: 80px 20px;
-    max-width: 1100px;
-    margin: 0 auto;
+    padding: 80px 20px; max-width: 1100px; margin: 0 auto;
   }
   .section-title {
     font-family: 'Cinzel', serif;
     font-size: clamp(24px, 4vw, 36px);
-    color: var(--gold);
-    text-align: center;
-    margin-bottom: 12px;
-    letter-spacing: 2px;
+    color: var(--gold); text-align: center;
+    margin-bottom: 12px; letter-spacing: 2px;
   }
   .section-subtitle {
-    text-align: center;
-    color: var(--text-dim);
-    font-size: 15px;
-    margin-bottom: 50px;
+    text-align: center; color: var(--text-dim);
+    font-size: 15px; margin-bottom: 50px;
   }
   .divider {
     width: 60px; height: 3px;
     background: linear-gradient(90deg, transparent, var(--ember), transparent);
-    margin: 0 auto 50px;
-    border-radius: 2px;
+    margin: 0 auto 50px; border-radius: 2px;
   }
 
   /* ===== FEATURES ===== */
@@ -179,147 +172,78 @@
     gap: 24px;
   }
   .feature-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 28px;
-    transition: all 0.3s ease;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px; transition: all 0.3s ease;
   }
   .feature-card:hover {
-    border-color: var(--ember);
-    transform: translateY(-3px);
+    border-color: var(--ember); transform: translateY(-3px);
     box-shadow: 0 8px 30px rgba(255,102,51,0.1);
   }
-  .feature-icon {
-    font-size: 28px;
-    margin-bottom: 14px;
-    display: block;
-  }
+  .feature-icon { font-size: 28px; margin-bottom: 14px; display: block; }
   .feature-card h3 {
-    font-family: 'Cinzel', serif;
-    color: var(--gold);
-    font-size: 18px;
-    margin-bottom: 10px;
+    font-family: 'Cinzel', serif; color: var(--gold);
+    font-size: 18px; margin-bottom: 10px;
   }
-  .feature-card p {
-    color: #aaa;
-    font-size: 14px;
-    line-height: 1.7;
-  }
+  .feature-card p { color: #aaa; font-size: 14px; line-height: 1.7; }
 
   /* ===== CHARACTERS ===== */
   .char-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 16px;
-    justify-items: center;
+    gap: 16px; justify-items: center;
   }
   .char-card {
-    background: var(--bg-card);
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    padding: 16px 12px;
-    width: 100%;
-    max-width: 160px;
-    text-align: center;
-    transition: all 0.3s ease;
-    cursor: default;
+    background: var(--bg-card); border: 2px solid var(--border);
+    border-radius: 12px; padding: 16px 12px;
+    width: 100%; max-width: 160px; text-align: center;
+    transition: all 0.3s ease; cursor: default;
   }
   .char-card:hover {
-    border-color: var(--ember);
-    transform: translateY(-4px);
+    border-color: var(--ember); transform: translateY(-4px);
     box-shadow: 0 8px 25px rgba(255,102,51,0.15);
     background: var(--bg-card-hover);
   }
   .char-card img {
-    width: 80px; height: 80px;
-    object-fit: contain;
-    image-rendering: pixelated;
-    margin-bottom: 10px;
+    width: 80px; height: 80px; object-fit: contain;
+    image-rendering: pixelated; margin-bottom: 10px;
     filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
     transition: transform 0.3s ease;
   }
   .char-card:hover img { transform: scale(1.15); }
   .char-card .char-name {
-    font-family: 'Cinzel', serif;
-    color: var(--ember);
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 2px;
+    font-family: 'Cinzel', serif; color: var(--ember);
+    font-size: 14px; font-weight: 700; margin-bottom: 2px;
   }
   .char-card .char-role {
-    color: var(--text-dim);
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    color: var(--text-dim); font-size: 11px;
+    text-transform: uppercase; letter-spacing: 1px;
   }
-  .char-placeholder {
-    width: 80px; height: 80px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 36px;
-    margin: 0 auto 10px;
-    background: #1a1a2e;
-    border-radius: 8px;
-    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
-  }
-
-  /* ===== LANGUAGES ===== */
-  .lang-grid {
-    display: flex; flex-wrap: wrap; justify-content: center; gap: 16px;
-  }
-  .lang-item {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 22px;
-    display: flex; align-items: center; gap: 10px;
-    transition: all 0.3s ease;
-  }
-  .lang-item:hover {
-    border-color: var(--gold-dim);
-    transform: translateY(-2px);
-  }
-  .lang-flag { font-size: 24px; }
-  .lang-name { color: #ccc; font-size: 14px; }
 
   /* ===== STEAM WIDGET ===== */
   .steam-section {
-    text-align: center;
-    padding: 60px 20px 80px;
+    text-align: center; padding: 60px 20px 80px;
+    position: relative; z-index: 1;
   }
   .steam-widget {
-    max-width: 650px;
-    margin: 0 auto;
-    border-radius: 8px;
-    overflow: hidden;
+    max-width: 650px; margin: 0 auto;
+    border-radius: 8px; overflow: hidden;
     box-shadow: 0 10px 40px rgba(0,0,0,0.4);
   }
-  .steam-widget iframe {
-    width: 100%;
-    height: 190px;
-    border: none;
-  }
+  .steam-widget iframe { width: 100%; height: 190px; border: none; }
 
   /* ===== FOOTER ===== */
   footer {
     position: relative; z-index: 1;
-    text-align: center;
-    padding: 40px 20px;
+    text-align: center; padding: 40px 20px;
     border-top: 1px solid var(--border);
-    color: var(--text-dim);
-    font-size: 13px;
+    color: var(--text-dim); font-size: 13px;
   }
   footer .studio {
-    font-family: 'Cinzel', serif;
-    color: var(--gold-dim);
-    font-size: 15px;
-    margin-bottom: 8px;
-    letter-spacing: 1px;
+    font-family: 'Cinzel', serif; color: var(--gold-dim);
+    font-size: 15px; margin-bottom: 8px; letter-spacing: 1px;
   }
   footer a {
-    color: var(--ember);
-    text-decoration: none;
-    transition: color 0.2s;
+    color: var(--ember); text-decoration: none; transition: color 0.2s;
   }
   footer a:hover { color: var(--gold); }
   .footer-links {
@@ -335,30 +259,59 @@
     .char-card img { width: 60px; height: 60px; }
     .hero-desc { font-size: 15px; }
     section { padding: 50px 16px; }
+    .lang-bar { gap: 4px; padding: 6px 8px; }
+    .lang-btn span { display: none; }
   }
 </style>
 </head>
 <body>
 
-<!-- Floating particles -->
+<!-- LANGUAGE BAR -->
+<div class="lang-bar">
+  <button class="lang-btn" data-lang="pt" onclick="setLang('pt')">
+    <img src="https://flagcdn.com/w40/br.png" alt="BR"><span>PT-BR</span>
+  </button>
+  <button class="lang-btn active" data-lang="en" onclick="setLang('en')">
+    <img src="https://flagcdn.com/w40/gb.png" alt="EN"><span>EN</span>
+  </button>
+  <button class="lang-btn" data-lang="de" onclick="setLang('de')">
+    <img src="https://flagcdn.com/w40/de.png" alt="DE"><span>DE</span>
+  </button>
+  <button class="lang-btn" data-lang="es" onclick="setLang('es')">
+    <img src="https://flagcdn.com/w40/es.png" alt="ES"><span>ES</span>
+  </button>
+  <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">
+    <img src="https://flagcdn.com/w40/ru.png" alt="RU"><span>RU</span>
+  </button>
+  <button class="lang-btn" data-lang="ja" onclick="setLang('ja')">
+    <img src="https://flagcdn.com/w40/jp.png" alt="JA"><span>JA</span>
+  </button>
+  <button class="lang-btn" data-lang="zh" onclick="setLang('zh')">
+    <img src="https://flagcdn.com/w40/cn.png" alt="ZH"><span>ZH</span>
+  </button>
+  <button class="lang-btn" data-lang="ko" onclick="setLang('ko')">
+    <img src="https://flagcdn.com/w40/kr.png" alt="KO"><span>KO</span>
+  </button>
+</div>
+
+<!-- PARTICLES -->
 <div class="particles" id="particles"></div>
 
 <!-- HERO -->
 <section class="hero">
   <img src="assets/logo.png" alt="Emberlorn" class="hero-logo">
-  <p class="hero-tagline">Dark Fantasy Action Roguelike</p>
+  <p class="hero-tagline" data-i18n="tagline">Dark Fantasy Action Roguelike</p>
   <img src="assets/keyart.webp" alt="Emberlorn Key Art" class="hero-keyart">
-  <p class="hero-desc">
-    Survive the waves. Adapt your build. Become legendary.<br>
+  <p class="hero-desc" data-i18n="desc">
+    Survive the waves. Adapt your build. Become legendary.
     A dark fantasy action roguelike with wave-based combat and a 3/4 top-down perspective.
     Each run is a new attempt to survive hordes of dark creatures — and every defeat makes you stronger.
   </p>
   <div class="cta-row">
-    <a href="https://store.steampowered.com/app/4585550/Emberlorn/" class="btn btn-steam" target="_blank">
-      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3l-.5 3H13v6.95c5.05-.5 9-4.76 9-9.95 0-5.52-4.48-10-10-10z"/></svg>
+    <a href="https://store.steampowered.com/app/4585550/Emberlorn/" class="btn btn-steam" target="_blank" data-i18n="btn_steam">
       Wishlist on Steam
     </a>
-    <a href="https://hudafy.itch.io/ashborn" class="btn btn-demo" target="_blank">
+    <a href="https://hudafy.itch.io/ashborn" class="btn btn-demo" target="_blank" data-i18n="btn_demo">
       Play Free Demo
     </a>
   </div>
@@ -366,124 +319,108 @@
 
 <!-- FEATURES -->
 <section>
-  <h2 class="section-title">Features</h2>
+  <h2 class="section-title" data-i18n="features_title">Features</h2>
   <div class="divider"></div>
   <div class="features-grid">
     <div class="feature-card">
       <span class="feature-icon">&#9876;</span>
-      <h3>Intense Combat</h3>
-      <p>Face increasingly dangerous waves of enemies, culminating in brutal bosses. Combine automatic and active skills to create devastating combos — melee, ranged, area or single-target.</p>
+      <h3 data-i18n="f1_title">Intense Combat</h3>
+      <p data-i18n="f1_desc">Face increasingly dangerous waves of enemies, culminating in brutal bosses. Combine automatic and active skills to create devastating combos — melee, ranged, area or single-target.</p>
     </div>
     <div class="feature-card">
       <span class="feature-icon">&#9881;</span>
-      <h3>Build Your Way</h3>
-      <p>32 skills split between physical and magical. Equipment with damage bonuses and trophies with unique effects. The Blacksmith transmutes your gear to adapt to any strategy.</p>
+      <h3 data-i18n="f2_title">Build Your Way</h3>
+      <p data-i18n="f2_desc">32 skills split between physical and magical. Equipment with damage bonuses and trophies with unique effects. The Blacksmith transmutes your gear to adapt to any strategy.</p>
     </div>
     <div class="feature-card">
       <span class="feature-icon">&#127970;</span>
-      <h3>Preparation Room</h3>
-      <p>Between each wave, visit the Merchant to buy equipment and trophies, or the Blacksmith to transmute your items. Gear up before facing the next challenge.</p>
+      <h3 data-i18n="f3_title">Preparation Room</h3>
+      <p data-i18n="f3_desc">Between each wave, visit the Merchant to buy equipment and trophies, or the Blacksmith to transmute your items. Gear up before facing the next challenge.</p>
     </div>
     <div class="feature-card">
       <span class="feature-icon">&#11014;</span>
-      <h3>Permanent Progression</h3>
-      <p>Ashes collected during runs unlock upgrades at the Altar that persist between matches. The more you play, the stronger your next hero starts.</p>
+      <h3 data-i18n="f4_title">Permanent Progression</h3>
+      <p data-i18n="f4_desc">Ashes collected during runs unlock upgrades at the Altar that persist between matches. The more you play, the stronger your next hero starts.</p>
     </div>
     <div class="feature-card">
       <span class="feature-icon">&#128081;</span>
-      <h3>12 Unique Heroes</h3>
-      <p>Each hero has a unique starting skill, passive and stats — from brutal berserkers to arcane sorceresses. Find the one that fits your style.</p>
+      <h3 data-i18n="f5_title">12 Unique Heroes</h3>
+      <p data-i18n="f5_desc">Each hero has a unique starting skill, passive and stats — from brutal berserkers to arcane sorceresses. Find the one that fits your style.</p>
     </div>
     <div class="feature-card">
       <span class="feature-icon">&#127922;</span>
-      <h3>Free Demo</h3>
-      <p>Try a selection of heroes and challenges for free. The full game brings even more content, characters and difficulties.</p>
+      <h3 data-i18n="f6_title">Free Demo</h3>
+      <p data-i18n="f6_desc">Try a selection of heroes and challenges for free. The full game brings even more content, characters and difficulties.</p>
     </div>
   </div>
 </section>
 
 <!-- CHARACTERS -->
 <section>
-  <h2 class="section-title">Choose Your Hero</h2>
-  <p class="section-subtitle">12 heroes, each with unique skills, passives, and playstyles</p>
+  <h2 class="section-title" data-i18n="heroes_title">Choose Your Hero</h2>
+  <p class="section-subtitle" data-i18n="heroes_sub">12 heroes, each with unique skills, passives, and playstyles</p>
   <div class="divider"></div>
   <div class="char-grid">
     <div class="char-card">
       <img src="assets/chars/kael.webp" alt="Kael">
       <div class="char-name">Kael</div>
-      <div class="char-role">Young Fighter</div>
+      <div class="char-role" data-i18n="role_kael">Young Fighter</div>
     </div>
     <div class="char-card">
       <img src="assets/chars/veynar.webp" alt="Veynar">
       <div class="char-name">Veynar</div>
-      <div class="char-role">Shadow Warrior</div>
+      <div class="char-role" data-i18n="role_veynar">Shadow Warrior</div>
     </div>
     <div class="char-card">
       <img src="assets/chars/draven.webp" alt="Draven">
       <div class="char-name">Draven</div>
-      <div class="char-role">Cursed Berserker</div>
+      <div class="char-role" data-i18n="role_draven">Cursed Berserker</div>
     </div>
     <div class="char-card">
       <img src="assets/chars/lyra.webp" alt="Lyra">
       <div class="char-name">Lyra</div>
-      <div class="char-role">Precision Archer</div>
+      <div class="char-role" data-i18n="role_lyra">Precise Marksman</div>
     </div>
     <div class="char-card">
       <img src="assets/chars/zephyr.webp" alt="Zephyr">
       <div class="char-name">Zephyr</div>
-      <div class="char-role">Ghost Speedster</div>
+      <div class="char-role" data-i18n="role_zephyr">Phantom Speedster</div>
     </div>
     <div class="char-card">
       <img src="assets/chars/gorath.webp" alt="Gorath">
       <div class="char-name">Gorath</div>
-      <div class="char-role">Iron Colossus</div>
+      <div class="char-role" data-i18n="role_gorath">Iron Colossus</div>
     </div>
     <div class="char-card">
       <img src="assets/chars/shade.webp" alt="Shade">
       <div class="char-name">Shade</div>
-      <div class="char-role">Shadow Assassin</div>
+      <div class="char-role" data-i18n="role_shade">Shadow Assassin</div>
     </div>
     <div class="char-card">
       <img src="assets/chars/nyx.webp" alt="Nyx">
       <div class="char-name">Nyx</div>
-      <div class="char-role">Arcane Sorceress</div>
+      <div class="char-role" data-i18n="role_nyx">Arcane Sorceress</div>
     </div>
     <div class="char-card">
       <img src="assets/chars/riven.webp" alt="Riven">
       <div class="char-name">Riven</div>
-      <div class="char-role">Fortune Hunter</div>
+      <div class="char-role" data-i18n="role_riven">Fortune Hunter</div>
     </div>
     <div class="char-card">
       <img src="assets/chars/malachar.webp" alt="Malachar">
       <div class="char-name">Malachar</div>
-      <div class="char-role">Immortal Vampire</div>
+      <div class="char-role" data-i18n="role_malachar">Immortal Vampire</div>
     </div>
     <div class="char-card">
       <img src="assets/chars/dante.webp" alt="Dante">
       <div class="char-name">Dante</div>
-      <div class="char-role">Destiny Gambler</div>
+      <div class="char-role" data-i18n="role_dante">Destiny Gambler</div>
     </div>
     <div class="char-card">
       <img src="assets/chars/ceberu.webp" alt="Ceberu">
       <div class="char-name">Ceberu</div>
-      <div class="char-role">Stone Sentinel</div>
+      <div class="char-role" data-i18n="role_ceberu">Stone Sentinel</div>
     </div>
-  </div>
-</section>
-
-<!-- LANGUAGES -->
-<section>
-  <h2 class="section-title">Supported Languages</h2>
-  <div class="divider"></div>
-  <div class="lang-grid">
-    <div class="lang-item"><span class="lang-flag">&#127463;&#127479;</span><span class="lang-name">Português</span></div>
-    <div class="lang-item"><span class="lang-flag">&#127468;&#127463;</span><span class="lang-name">English</span></div>
-    <div class="lang-item"><span class="lang-flag">&#127465;&#127466;</span><span class="lang-name">Deutsch</span></div>
-    <div class="lang-item"><span class="lang-flag">&#127466;&#127480;</span><span class="lang-name">Español</span></div>
-    <div class="lang-item"><span class="lang-flag">&#127479;&#127482;</span><span class="lang-name">Русский</span></div>
-    <div class="lang-item"><span class="lang-flag">&#127471;&#127477;</span><span class="lang-name">日本語</span></div>
-    <div class="lang-item"><span class="lang-flag">&#127464;&#127475;</span><span class="lang-name">简体中文</span></div>
-    <div class="lang-item"><span class="lang-flag">&#127472;&#127479;</span><span class="lang-name">한국어</span></div>
   </div>
 </section>
 
@@ -497,7 +434,7 @@
 <!-- FOOTER -->
 <footer>
   <div class="studio">Ufy Studios</div>
-  <p>A dark fantasy action roguelike — coming soon</p>
+  <p data-i18n="footer_text">A dark fantasy action roguelike — coming soon</p>
   <div class="footer-links">
     <a href="https://store.steampowered.com/app/4585550/Emberlorn/" target="_blank">Steam</a>
     <a href="https://hudafy.itch.io/ashborn" target="_blank">itch.io</a>
@@ -505,24 +442,203 @@
 </footer>
 
 <script>
-// Generate floating ember particles
+// === TRANSLATIONS ===
+const T = {
+  en: {
+    tagline: 'Dark Fantasy Action Roguelike',
+    desc: 'Survive the waves. Adapt your build. Become legendary. A dark fantasy action roguelike with wave-based combat and a 3/4 top-down perspective. Each run is a new attempt to survive hordes of dark creatures — and every defeat makes you stronger.',
+    btn_steam: 'Wishlist on Steam',
+    btn_demo: 'Play Free Demo',
+    features_title: 'Features',
+    f1_title: 'Intense Combat', f1_desc: 'Face increasingly dangerous waves of enemies, culminating in brutal bosses. Combine automatic and active skills to create devastating combos — melee, ranged, area or single-target.',
+    f2_title: 'Build Your Way', f2_desc: '32 skills split between physical and magical. Equipment with damage bonuses and trophies with unique effects. The Blacksmith transmutes your gear to adapt to any strategy.',
+    f3_title: 'Preparation Room', f3_desc: 'Between each wave, visit the Merchant to buy equipment and trophies, or the Blacksmith to transmute your items. Gear up before facing the next challenge.',
+    f4_title: 'Permanent Progression', f4_desc: 'Ashes collected during runs unlock upgrades at the Altar that persist between matches. The more you play, the stronger your next hero starts.',
+    f5_title: '12 Unique Heroes', f5_desc: 'Each hero has a unique starting skill, passive and stats — from brutal berserkers to arcane sorceresses. Find the one that fits your style.',
+    f6_title: 'Free Demo', f6_desc: 'Try a selection of heroes and challenges for free. The full game brings even more content, characters and difficulties.',
+    heroes_title: 'Choose Your Hero', heroes_sub: '12 heroes, each with unique skills, passives, and playstyles',
+    role_kael: 'Young Fighter', role_veynar: 'Shadow Warrior', role_draven: 'Cursed Berserker',
+    role_lyra: 'Precise Marksman', role_zephyr: 'Phantom Speedster', role_gorath: 'Iron Colossus',
+    role_shade: 'Shadow Assassin', role_nyx: 'Arcane Sorceress', role_riven: 'Fortune Hunter',
+    role_malachar: 'Immortal Vampire', role_dante: 'Destiny Gambler', role_ceberu: 'Stone Sentinel',
+    footer_text: 'A dark fantasy action roguelike — coming soon'
+  },
+  pt: {
+    tagline: 'Action Roguelike de Fantasia Sombria',
+    desc: 'Sobreviva às ondas. Adapte seu build. Torne-se lendário. Um action roguelike de fantasia sombria com combate por ondas e perspectiva 3/4 de cima. Cada partida é uma nova tentativa de sobreviver a hordas de criaturas sombrias — e cada derrota te torna mais forte.',
+    btn_steam: 'Lista de Desejos na Steam',
+    btn_demo: 'Jogar Demo Grátis',
+    features_title: 'Características',
+    f1_title: 'Combate Intenso', f1_desc: 'Enfrente ondas de inimigos cada vez mais perigosas, culminando em chefes brutais. Combine habilidades automáticas e ativas para criar combos devastadores — corpo a corpo, à distância, em área ou alvo único.',
+    f2_title: 'Monte Seu Build', f2_desc: '32 habilidades divididas entre físicas e mágicas. Equipamentos com bônus de dano e troféus com efeitos únicos. O Ferreiro transmuta seu equipamento para se adaptar a qualquer estratégia.',
+    f3_title: 'Sala de Preparação', f3_desc: 'Entre cada onda, visite o Mercador para comprar equipamentos e troféus, ou o Ferreiro para transmutar seus itens. Prepare-se antes de enfrentar o próximo desafio.',
+    f4_title: 'Progressão Permanente', f4_desc: 'Cinzas coletadas durante as partidas desbloqueiam melhorias no Altar que persistem entre as partidas. Quanto mais você joga, mais forte seu próximo herói começa.',
+    f5_title: '12 Heróis Únicos', f5_desc: 'Cada herói tem uma habilidade inicial, passiva e stats únicos — de berserkers brutais a feiticeiras arcanas. Encontre aquele que combina com seu estilo.',
+    f6_title: 'Demo Grátis', f6_desc: 'Experimente uma seleção de heróis e desafios gratuitamente. O jogo completo traz ainda mais conteúdo, personagens e dificuldades.',
+    heroes_title: 'Escolha Seu Herói', heroes_sub: '12 heróis, cada um com habilidades, passivas e estilos únicos',
+    role_kael: 'Lutador Jovem', role_veynar: 'Guerreiro Sombrio', role_draven: 'Berserker Amaldiçoado',
+    role_lyra: 'Atiradora Precisa', role_zephyr: 'Velocista Fantasma', role_gorath: 'Colosso de Ferro',
+    role_shade: 'Assassino das Sombras', role_nyx: 'Feiticeira Arcana', role_riven: 'Caçadora de Fortunas',
+    role_malachar: 'Vampiro Imortal', role_dante: 'Apostador do Destino', role_ceberu: 'Sentinela de Pedra',
+    footer_text: 'Um action roguelike de fantasia sombria — em breve'
+  },
+  de: {
+    tagline: 'Dark-Fantasy-Action-Roguelike',
+    desc: 'Überlebe die Wellen. Passe deinen Build an. Werde legendär. Emberlorn ist ein Dark-Fantasy-Action-Roguelike mit wellenbasiertem Kampf und einer 3/4-Draufsicht. Jeder Durchlauf ist ein neuer Versuch, Horden dunkler Kreaturen zu überleben — und jede Niederlage macht dich stärker.',
+    btn_steam: 'Auf die Wunschliste',
+    btn_demo: 'Kostenlose Demo',
+    features_title: 'Features',
+    f1_title: 'Intensiver Kampf', f1_desc: 'Stelle dich immer gefährlicheren Gegnerwellen, die in brutalen Bosskämpfen gipfeln. Kombiniere automatische und aktive Fähigkeiten zu verheerenden Combos — Nahkampf, Fernkampf, Fläche oder Einzelziel.',
+    f2_title: 'Baue deinen Build', f2_desc: '32 Fähigkeiten, aufgeteilt in physisch und magisch. Ausrüstung mit Schadensboni und Trophäen mit einzigartigen Effekten. Der Schmied transmutiert deine Ausrüstung, um sie an jede Strategie anzupassen.',
+    f3_title: 'Vorbereitungsraum', f3_desc: 'Zwischen jeder Welle besuchst du den Händler, um Ausrüstung und Trophäen zu kaufen, oder den Schmied, um deine Gegenstände zu transmutieren. Rüste dich aus, bevor du dich der nächsten Herausforderung stellst.',
+    f4_title: 'Permanente Progression', f4_desc: 'Asche, die während der Durchläufe gesammelt wird, schaltet am Altar Verbesserungen frei, die zwischen Partien bestehen bleiben. Je mehr du spielst, desto stärker startet dein nächster Held.',
+    f5_title: '12 Einzigartige Helden', f5_desc: 'Jeder Held hat eine einzigartige Startfähigkeit, Passive und Werte — vom brutalen Berserker bis zur arkanen Zauberin. Finde den, der zu deinem Stil passt.',
+    f6_title: 'Kostenlose Demo', f6_desc: 'Probiere eine Auswahl an Helden und Herausforderungen kostenlos aus. Das vollständige Spiel bietet noch mehr Inhalte, Charaktere und Schwierigkeitsgrade.',
+    heroes_title: 'Wähle deinen Helden', heroes_sub: '12 Helden mit einzigartigen Fähigkeiten, Passiven und Spielstilen',
+    role_kael: 'Junger Kämpfer', role_veynar: 'Schattenkrieger', role_draven: 'Verfluchter Berserker',
+    role_lyra: 'Präzisionsschützin', role_zephyr: 'Phantomsprinter', role_gorath: 'Eisenkoloss',
+    role_shade: 'Schattenassassine', role_nyx: 'Arkane Zauberin', role_riven: 'Glücksjägerin',
+    role_malachar: 'Unsterblicher Vampir', role_dante: 'Schicksalsspieler', role_ceberu: 'Steinerner Wächter',
+    footer_text: 'Ein Dark-Fantasy-Action-Roguelike — bald verfügbar'
+  },
+  es: {
+    tagline: 'Roguelike de Acción y Fantasía Oscura',
+    desc: 'Sobrevive a las oleadas. Adapta tu build. Conviértete en leyenda. Emberlorn es un roguelike de acción y fantasía oscura con combate por oleadas y perspectiva cenital 3/4. Cada partida es un nuevo intento de sobrevivir a hordas de criaturas oscuras — y cada derrota te hace más fuerte.',
+    btn_steam: 'Lista de Deseados',
+    btn_demo: 'Demo Gratis',
+    features_title: 'Características',
+    f1_title: 'Combate Intenso', f1_desc: 'Enfréntate a oleadas de enemigos cada vez más peligrosas, culminando en brutales jefes. Combina habilidades automáticas y activas para crear combos devastadores — cuerpo a cuerpo, a distancia, en área o contra un solo objetivo.',
+    f2_title: 'Construye a tu manera', f2_desc: '32 habilidades divididas entre físicas y mágicas. Equipamiento con bonificaciones de daño y trofeos con efectos únicos. El Herrero transmuta tu equipo para adaptarse a cualquier estrategia.',
+    f3_title: 'Sala de Preparación', f3_desc: 'Entre cada oleada, visita al Mercader para comprar equipamiento y trofeos, o al Herrero para transmutar tus objetos. Prepárate antes de enfrentar el siguiente desafío.',
+    f4_title: 'Progresión Permanente', f4_desc: 'Las cenizas recolectadas durante las partidas desbloquean mejoras en el Altar que persisten entre partidas. Cuanto más juegues, más fuerte comenzará tu próximo héroe.',
+    f5_title: '12 Héroes Únicos', f5_desc: 'Cada héroe tiene una habilidad inicial, pasiva y estadísticas únicas — desde berserkers brutales hasta hechiceras arcanas. Encuentra el que se adapte a tu estilo.',
+    f6_title: 'Demo Disponible', f6_desc: 'Prueba una selección de héroes y desafíos gratis. El juego completo traerá aún más contenido, personajes y dificultades.',
+    heroes_title: 'Elige tu Héroe', heroes_sub: '12 héroes, cada uno con habilidades, pasivas y estilos únicos',
+    role_kael: 'Luchador Joven', role_veynar: 'Guerrero Sombrío', role_draven: 'Berserker Maldito',
+    role_lyra: 'Tiradora Precisa', role_zephyr: 'Velocista Fantasma', role_gorath: 'Coloso de Hierro',
+    role_shade: 'Asesino de Sombras', role_nyx: 'Hechicera Arcana', role_riven: 'Cazadora de Fortunas',
+    role_malachar: 'Vampiro Inmortal', role_dante: 'Apostador del Destino', role_ceberu: 'Centinela de Piedra',
+    footer_text: 'Un roguelike de acción y fantasía oscura — próximamente'
+  },
+  ru: {
+    tagline: 'Экшен-рогалик в жанре тёмного фэнтези',
+    desc: 'Переживи волны. Адаптируй билд. Стань легендой. Emberlorn — экшен-рогалик в жанре тёмного фэнтези с волновым боем и видом сверху в перспективе 3/4. Каждый забег — новая попытка выжить среди орд тёмных созданий, и каждое поражение делает тебя сильнее.',
+    btn_steam: 'В список желаемого',
+    btn_demo: 'Бесплатная демо',
+    features_title: 'Особенности',
+    f1_title: 'Интенсивный бой', f1_desc: 'Сражайся с всё более опасными волнами врагов, завершающимися жестокими боссами. Комбинируй автоматические и активные навыки для создания разрушительных комбо — ближний бой, дальний бой, по площади или по одной цели.',
+    f2_title: 'Собери свой билд', f2_desc: '32 навыка, разделённых на физические и магические. Снаряжение с бонусами к урону и трофеи с уникальными эффектами. Кузнец трансмутирует снаряжение под любую стратегию.',
+    f3_title: 'Комната подготовки', f3_desc: 'Между волнами посети Торговца, чтобы купить снаряжение и трофеи, или Кузнеца, чтобы трансмутировать предметы. Подготовься перед следующим испытанием.',
+    f4_title: 'Постоянная прогрессия', f4_desc: 'Пепел, собранный во время забегов, открывает улучшения у Алтаря, которые сохраняются между партиями. Чем больше играешь, тем сильнее стартует следующий герой.',
+    f5_title: '12 Уникальных героев', f5_desc: 'У каждого героя уникальный стартовый навык, пассивка и характеристики — от жестоких берсерков до загадочных чародеек. Найди того, кто подходит твоему стилю.',
+    f6_title: 'Бесплатная демо', f6_desc: 'Попробуй подборку героев и испытаний бесплатно. Полная версия принесёт ещё больше контента, персонажей и сложностей.',
+    heroes_title: 'Выбери своего героя', heroes_sub: '12 героев с уникальными навыками, пассивками и стилями игры',
+    role_kael: 'Молодой боец', role_veynar: 'Теневой воин', role_draven: 'Проклятый берсерк',
+    role_lyra: 'Меткий стрелок', role_zephyr: 'Призрачный спринтер', role_gorath: 'Железный колосс',
+    role_shade: 'Теневой убийца', role_nyx: 'Чародейка', role_riven: 'Охотница за удачей',
+    role_malachar: 'Бессмертный вампир', role_dante: 'Игрок судьбы', role_ceberu: 'Каменный страж',
+    footer_text: 'Экшен-рогалик в жанре тёмного фэнтези — скоро'
+  },
+  ja: {
+    tagline: 'ダークファンタジー・アクションローグライク',
+    desc: 'ウェーブを生き延びろ。ビルドを磨け。伝説になれ。Emberlornはダークファンタジーのアクションローグライク。3/4見下ろし視点のウェーブ制バトルで、闇の魔物の大群に挑む。毎回が新たな生存への挑戦——そして敗北のたびに、あなたは強くなる。',
+    btn_steam: 'ウィッシュリストに追加',
+    btn_demo: '無料デモをプレイ',
+    features_title: '特徴',
+    f1_title: '激しい戦闘', f1_desc: '次々と強くなる敵のウェーブに立ち向かい、凶悪なボスとの決戦を迎えよ。オートスキルとアクティブスキルを組み合わせ、近接・遠距離・範囲・単体の強力なコンボを生み出せ。',
+    f2_title: '自分だけのビルドを', f2_desc: '物理と魔法に分かれた32種類のスキル。ダメージボーナス付きの装備と、ユニーク効果を持つトロフィー。鍛冶屋で装備を変換し、あらゆる戦略に対応しよう。',
+    f3_title: '準備の間', f3_desc: 'ウェーブの合間に商人を訪れて装備やトロフィーを購入するか、鍛冶屋でアイテムを変換しよう。次の戦いに備えて万全の態勢を整えろ。',
+    f4_title: '永続的な成長', f4_desc: 'ランで集めた灰は祭壇でアップグレードに変わり、次の挑戦に引き継がれる。プレイすればするほど、次のヒーローはより強くスタートする。',
+    f5_title: '12人のユニークなヒーロー', f5_desc: '各ヒーローは固有の初期スキル、パッシブ、ステータスを持つ——凶暴なバーサーカーから神秘的な魔女まで。自分のスタイルに合うヒーローを見つけよう。',
+    f6_title: '無料デモ配信中', f6_desc: '一部のヒーローとチャレンジを無料で体験。製品版ではさらに多くのコンテンツ、キャラクター、難易度が追加される。',
+    heroes_title: 'ヒーローを選べ', heroes_sub: '12人のヒーロー、それぞれ固有のスキル、パッシブ、プレイスタイル',
+    role_kael: '若き闘士', role_veynar: '影の戦士', role_draven: '呪われし狂戦士',
+    role_lyra: '精密射手', role_zephyr: '幻影のスプリンター', role_gorath: '鉄の巨人',
+    role_shade: '影の暗殺者', role_nyx: '秘術の魔女', role_riven: '幸運の狩人',
+    role_malachar: '不死の吸血鬼', role_dante: '運命の賭博師', role_ceberu: '石の番人',
+    footer_text: 'ダークファンタジー・アクションローグライク — 近日公開'
+  },
+  zh: {
+    tagline: '暗黑奇幻动作Roguelike',
+    desc: '在波涛中求生。打造你的流派。成为传奇。Emberlorn是一款暗黑奇幻动作Roguelike，采用波次制战斗和3/4俯视视角。每一局都是在黑暗生物的大军中求生的全新尝试——而每一次失败都会让你变得更强。',
+    btn_steam: '加入愿望单',
+    btn_demo: '免费试玩',
+    features_title: '游戏特色',
+    f1_title: '激烈战斗', f1_desc: '面对愈发危险的敌人波次，最终迎战凶残的Boss。组合自动技能和主动技能，打造毁灭性连招——近战、远程、范围或单体。',
+    f2_title: '自由构建', f2_desc: '32种技能分为物理和魔法两大类。带有伤害加成的装备和拥有独特效果的奖杯。铁匠可以转化你的装备，适应任何策略。',
+    f3_title: '准备室', f3_desc: '每波之间，拜访商人购买装备和奖杯，或找铁匠转化物品。在迎接下一个挑战之前做好充分准备。',
+    f4_title: '永久成长', f4_desc: '在冒险中收集的灰烬可在祭坛解锁永久升级，在对局之间持续生效。玩得越多，下一位英雄的起点就越强。',
+    f5_title: '12位独特英雄', f5_desc: '每位英雄都有独特的初始技能、被动和属性——从残暴的狂战士到神秘的女巫。找到最适合你风格的那一位。',
+    f6_title: '免费试玩版', f6_desc: '免费体验部分英雄和挑战。正式版将带来更多内容、角色和难度。',
+    heroes_title: '选择你的英雄', heroes_sub: '12位英雄，各有独特技能、被动和游玩风格',
+    role_kael: '年轻斗士', role_veynar: '暗影战士', role_draven: '诅咒狂战士',
+    role_lyra: '精准射手', role_zephyr: '幻影疾客', role_gorath: '钢铁巨像',
+    role_shade: '暗影刺客', role_nyx: '奥术女巫', role_riven: '财富猎人',
+    role_malachar: '不朽吸血鬼', role_dante: '命运赌徒', role_ceberu: '石之哨兵',
+    footer_text: '暗黑奇幻动作Roguelike——即将推出'
+  },
+  ko: {
+    tagline: '다크 판타지 액션 로그라이크',
+    desc: '웨이브를 견뎌라. 빌드를 다듬어라. 전설이 되어라. Emberlorn은 웨이브 기반 전투와 3/4 탑다운 시점을 가진 다크 판타지 액션 로그라이크입니다. 매 런은 어둠의 생물 무리 속에서 살아남기 위한 새로운 도전이며, 패배할 때마다 당신은 더 강해집니다.',
+    btn_steam: '위시리스트에 추가',
+    btn_demo: '무료 데모 플레이',
+    features_title: '특징',
+    f1_title: '격렬한 전투', f1_desc: '점점 더 위험해지는 적의 웨이브에 맞서고, 잔혹한 보스와의 결전을 맞이하라. 오토 스킬과 액티브 스킬을 조합해 강력한 콤보를 만들어라 — 근접, 원거리, 광역 또는 단일 대상.',
+    f2_title: '나만의 빌드', f2_desc: '물리와 마법으로 나뉜 32가지 스킬. 데미지 보너스가 붙은 장비와 고유 효과를 가진 트로피. 대장장이에게서 장비를 변환해 어떤 전략에도 대응하라.',
+    f3_title: '준비의 방', f3_desc: '웨이브 사이에 상인을 방문해 장비와 트로피를 구매하거나, 대장장이에게서 아이템을 변환하라. 다음 도전에 맞서기 전에 만반의 준비를 갖춰라.',
+    f4_title: '영구 성장', f4_desc: '런에서 모은 재는 제단에서 영구 업그레이드로 전환되어 매치 간에 유지된다. 플레이할수록 다음 영웅은 더 강하게 시작한다.',
+    f5_title: '12명의 고유 영웅', f5_desc: '각 영웅은 고유한 시작 스킬, 패시브, 스탯을 가진다 — 잔혹한 버서커부터 신비로운 마녀까지. 당신의 스타일에 맞는 영웅을 찾아라.',
+    f6_title: '무료 데모', f6_desc: '일부 영웅과 도전을 무료로 체험하라. 정식 버전에서는 더 많은 콘텐츠, 캐릭터, 난이도가 추가된다.',
+    heroes_title: '영웅을 선택하라', heroes_sub: '12명의 영웅, 각자 고유한 스킬, 패시브, 플레이스타일',
+    role_kael: '젊은 투사', role_veynar: '그림자 전사', role_draven: '저주받은 광전사',
+    role_lyra: '정밀 사수', role_zephyr: '유령 스프린터', role_gorath: '강철 거상',
+    role_shade: '그림자 암살자', role_nyx: '비전 마녀', role_riven: '행운의 사냥꾼',
+    role_malachar: '불멸의 뱀파이어', role_dante: '운명의 도박사', role_ceberu: '돌의 파수꾼',
+    footer_text: '다크 판타지 액션 로그라이크 — 곧 출시'
+  }
+};
+
+function setLang(lang) {
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (T[lang] && T[lang][key]) el.textContent = T[lang][key];
+  });
+  document.documentElement.lang = lang === 'pt' ? 'pt-BR' : lang;
+  localStorage.setItem('emberlorn-lang', lang);
+}
+
+// Auto-detect language or load saved preference
 (function() {
-  const container = document.getElementById('particles');
-  const count = 30;
-  for (let i = 0; i < count; i++) {
+  const saved = localStorage.getItem('emberlorn-lang');
+  if (saved && T[saved]) { setLang(saved); return; }
+  const browserLang = (navigator.language || '').toLowerCase();
+  if (browserLang.startsWith('pt')) setLang('pt');
+  else if (browserLang.startsWith('de')) setLang('de');
+  else if (browserLang.startsWith('es')) setLang('es');
+  else if (browserLang.startsWith('ru')) setLang('ru');
+  else if (browserLang.startsWith('ja')) setLang('ja');
+  else if (browserLang.startsWith('zh')) setLang('zh');
+  else if (browserLang.startsWith('ko')) setLang('ko');
+  else setLang('en');
+})();
+
+// Particles
+(function() {
+  const c = document.getElementById('particles');
+  for (let i = 0; i < 30; i++) {
     const p = document.createElement('div');
     p.className = 'particle';
-    p.style.left = Math.random() * 100 + '%';
+    p.style.left = Math.random()*100+'%';
     p.style.bottom = '-10px';
-    p.style.width = (1 + Math.random() * 3) + 'px';
+    p.style.width = (1+Math.random()*3)+'px';
     p.style.height = p.style.width;
-    p.style.animationDuration = (8 + Math.random() * 12) + 's';
-    p.style.animationDelay = (Math.random() * 15) + 's';
-    p.style.background = Math.random() > 0.5 ? '#ff6633' : '#f1c40f';
-    container.appendChild(p);
+    p.style.animationDuration = (8+Math.random()*12)+'s';
+    p.style.animationDelay = (Math.random()*15)+'s';
+    p.style.background = Math.random()>0.5 ? '#ff6633' : '#f1c40f';
+    c.appendChild(p);
   }
 })();
 </script>
-
 </body>
 </html>
