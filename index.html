@@ -263,6 +263,25 @@
     filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
   }
 
+  /* ===== LANGUAGES ===== */
+  .lang-grid {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 16px;
+  }
+  .lang-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 22px;
+    display: flex; align-items: center; gap: 10px;
+    transition: all 0.3s ease;
+  }
+  .lang-item:hover {
+    border-color: var(--gold-dim);
+    transform: translateY(-2px);
+  }
+  .lang-flag { font-size: 24px; }
+  .lang-name { color: #ccc; font-size: 14px; }
+
   /* ===== STEAM WIDGET ===== */
   .steam-section {
     text-align: center;
@@ -449,6 +468,22 @@
       <div class="char-name">Ceberu</div>
       <div class="char-role">Stone Sentinel</div>
     </div>
+  </div>
+</section>
+
+<!-- LANGUAGES -->
+<section>
+  <h2 class="section-title">Supported Languages</h2>
+  <div class="divider"></div>
+  <div class="lang-grid">
+    <div class="lang-item"><span class="lang-flag">&#127463;&#127479;</span><span class="lang-name">Português</span></div>
+    <div class="lang-item"><span class="lang-flag">&#127468;&#127463;</span><span class="lang-name">English</span></div>
+    <div class="lang-item"><span class="lang-flag">&#127465;&#127466;</span><span class="lang-name">Deutsch</span></div>
+    <div class="lang-item"><span class="lang-flag">&#127466;&#127480;</span><span class="lang-name">Español</span></div>
+    <div class="lang-item"><span class="lang-flag">&#127479;&#127482;</span><span class="lang-name">Русский</span></div>
+    <div class="lang-item"><span class="lang-flag">&#127471;&#127477;</span><span class="lang-name">日本語</span></div>
+    <div class="lang-item"><span class="lang-flag">&#127464;&#127475;</span><span class="lang-name">简体中文</span></div>
+    <div class="lang-item"><span class="lang-flag">&#127472;&#127479;</span><span class="lang-name">한국어</span></div>
   </div>
 </section>
 
